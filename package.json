@@ -1,0 +1,11 @@
+{
+  "name": "netlify-crud-demo",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "netlify dev"
+  },
+  "devDependencies": {
+    "netlify-cli": "^12.0.0",
+    "@netlify/functions": "^1.0.0"
+  }
+}
