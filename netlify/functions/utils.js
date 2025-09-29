@@ -6,6 +6,9 @@ const dataPath = path.join('/tmp', 'data.json'); // 使用临时目录
 function readData() {
   try {
     const rawData = readFileSync(dataPath);
+
+
+    console.log(rawData, 'rawData-rawData');
     return JSON.parse(rawData);
   } catch (error) {
     // 文件不存在时返回默认值
