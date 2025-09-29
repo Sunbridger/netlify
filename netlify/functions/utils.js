@@ -7,10 +7,15 @@ function readData() {
   try {
     const rawData = readFileSync(dataPath);
 
+    // 将 Buffer 转换为字符串
+    const dataString = rawData.toString('utf8');
 
-    console.log(rawData, 'rawData-rawData');
-    return JSON.parse(rawData);
+    console.log(dataString, 'dataString'); // 现在可以看到JSON字符串了
+    console.log(JSON.parse(dataString), 'parsedData'); // 解析后的对象
+
+    return JSON.parse(dataString);
   } catch (error) {
+    console.log(error, '报错了');
     // 文件不存在时返回默认值
     return { items: [] };
   }
