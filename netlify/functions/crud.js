@@ -4,6 +4,8 @@ const path = require('path');
 // 数据文件路径
 const DATA_FILE = path.join(__dirname, 'data.json');
 
+console.log(DATA_FILE, 'DATA_FILE')
+
 // 读取数据
 function readData() {
   return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
