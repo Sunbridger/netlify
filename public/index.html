@@ -26,12 +26,13 @@
     </div>
 
     <script>
-      const API_BASE = '/.netlify/functions/crud/items';
+      // 更新 API 基础路径
+      const API_BASE = '/.netlify/functions';
 
       // 获取所有项目
       async function fetchItems() {
         try {
-          const response = await fetch(API_BASE);
+          const response = await fetch(`${API_BASE}/get-items`);
           if (!response.ok) throw new Error('获取数据失败');
           return await response.json();
         } catch (error) {
@@ -40,10 +41,22 @@
         }
       }
 
+      // 获取单个项目
+      async function fetchItem(id) {
+        try {
+          const response = await fetch(`${API_BASE}/get-item/${id}`);
+          if (!response.ok) throw new Error('获取数据失败');
+          return await response.json();
+        } catch (error) {
+          console.error('Error:', error);
+          return null;
+        }
+      }
+
       // 创建项目
       async function createItem(item) {
         try {
-          const response = await fetch(API_BASE, {
+          const response = await fetch(`${API_BASE}/create-item`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(item),
@@ -58,7 +71,7 @@
       // 更新项目
       async function updateItem(id, updates) {
         try {
-          const response = await fetch(`${API_BASE}/${id}`, {
+          const response = await fetch(`${API_BASE}/update-item/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updates),
@@ -73,7 +86,7 @@
       // 删除项目
       async function deleteItem(id) {
         try {
-          const response = await fetch(`${API_BASE}/${id}`, {
+          const response = await fetch(`${API_BASE}/delete-item/${id}`, {
             method: 'DELETE',
           });
           return await response.json();
@@ -82,57 +95,6 @@
           return null;
         }
       }
-
-      // 渲染项目列表
-      async function renderItems() {
-        const items = await fetchItems();
-        const itemsList = document.getElementById('itemsList');
-        itemsList.innerHTML = '';
-
-        if (items.length === 0) {
-          itemsList.innerHTML = '<p>没有项目</p>';
-          return;
-        }
-
-        items.forEach((item) => {
-          const itemElement = document.createElement('div');
-          itemElement.className = 'item';
-          itemElement.innerHTML = `
-          <div class="item-content">
-            <h3>${item.name}</h3>
-            <p>${item.description}</p>
-          </div>
-          <div class="item-actions">
-            <button class="edit-btn" data-id="${item.id}">编辑</button>
-            <button class="delete-btn" data-id="${item.id}">删除</button>
-          </div>
-        `;
-          itemsList.appendChild(itemElement);
-        });
-
-        // 添加删除按钮事件
-        document.querySelectorAll('.delete-btn').forEach((btn) => {
-          btn.addEventListener('click', async (e) => {
-            const id = parseInt(e.target.dataset.id);
-            await deleteItem(id);
-            await renderItems();
-          });
-        });
-
-        // 添加编辑按钮事件
-        document.querySelectorAll('.edit-btn').forEach((btn) => {
-          btn.addEventListener('click', (e) => {
-            const id = parseInt(e.target.dataset.id);
-            const item = items.find((item) => item.id === id);
-            if (item) {
-              document.getElementById('name').value = item.name;
-              document.getElementById('description').value = item.description;
-              document.getElementById('createForm').dataset.editing = id;
-            }
-          });
-        });
-      }
-
       // 表单提交处理
       document
         .getElementById('createForm')
