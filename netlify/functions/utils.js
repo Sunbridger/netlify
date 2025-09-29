@@ -1,25 +1,36 @@
-const fs = require('fs');
+// 内存数据存储
+let memoryData = { items: [] };
 
-const dataPath = [];
+// 初始化时可以设置初始数据（可选）
+function initData(initialData = { items: [] }) {
+  memoryData = { ...initialData };
+}
 
+// 读取数据
 function readData() {
-  try {
-    const rawData = fs.readFileSync(dataPath);
-    return JSON.parse(rawData);
-  } catch (error) {
-    console.error('Error reading data:', error);
-    return { items: [] };
-  }
+  return memoryData;
 }
 
+// 写入数据
 function writeData(data) {
-  try {
-    fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
-    return true;
-  } catch (error) {
-    console.error('Error writing data:', error);
-    return false;
-  }
+  memoryData = { ...data };
+  return true;
 }
 
-module.exports = { readData, writeData };
+// 清空数据
+function clearData() {
+  memoryData = { items: [] };
+}
+
+// 获取数据快照（用于调试或备份）
+function getDataSnapshot() {
+  return JSON.parse(JSON.stringify(memoryData));
+}
+
+module.exports = {
+  readData,
+  writeData,
+  initData,
+  clearData,
+  getDataSnapshot
+};
