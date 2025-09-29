@@ -1,36 +1,28 @@
-// 内存数据存储
-let memoryData = { items: [] };
+const { readFileSync, writeFileSync } = require('fs');
+const path = require('path');
 
-// 初始化时可以设置初始数据（可选）
-function initData(initialData = { items: [] }) {
-  memoryData = { ...initialData };
-}
+const dataPath = path.join('/tmp', 'data.json'); // 使用临时目录
 
-// 读取数据
 function readData() {
-  return memoryData;
+  try {
+    const rawData = readFileSync(dataPath);
+    return JSON.parse(rawData);
+  } catch (error) {
+    // 文件不存在时返回默认值
+    return { items: [] };
+  }
 }
 
-// 写入数据
 function writeData(data) {
-  memoryData = { ...data };
-  return true;
+  try {
+    writeFileSync(dataPath, JSON.stringify(data, null, 2));
+    return true;
+  } catch (error) {
+    console.error('Error writing data:', error);
+    return false;
+  }
 }
-
-// 清空数据
-function clearData() {
-  memoryData = { items: [] };
-}
-
-// 获取数据快照（用于调试或备份）
-function getDataSnapshot() {
-  return JSON.parse(JSON.stringify(memoryData));
-}
-
 module.exports = {
   readData,
   writeData,
-  initData,
-  clearData,
-  getDataSnapshot
 };
