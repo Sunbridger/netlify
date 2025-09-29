@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>本地JSON CRUD</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      li {
+        margin: 10px 0;
+      }
+      button {
+        margin-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>简易备忘录</h1>
+
+    <div>
+      <input type="text" id="title" placeholder="输入内容" />
+      <button onclick="createItem()">添加</button>
+    </div>
+
+    <ul id="list"></ul>
+
+    <script>
+      const API = '/.netlify/functions/crud';
+
+      // 加载数据
+      async function loadItems() {
+        const res = await fetch(API);
+        const items = await res.json();
+
+        document.getElementById('list').innerHTML = items
+          .map(
+            (item) => `
+        <li>
+          ${item.title}
+          <button onclick="updateItem('${item.id}')">修改</button>
+          <button onclick="deleteItem('${item.id}')">删除</button>
+        </li>
+      `
+          )
+          .join('');
+      }
+
+      // 新增
+      async function createItem() {
+        const title = document.getElementById('title').value.trim();
+        if (!title) return;
+
+        await fetch(API, {
+          method: 'POST',
+          body: JSON.stringify({ title }),
+        });
+
+        document.getElementById('title').value = '';
+        loadItems();
+      }
+
+      // 更新
+      async function updateItem(id) {
+        const newTitle = prompt('输入新内容');
+        if (!newTitle) return;
+
+        await fetch(API, {
+          method: 'PUT',
+          body: JSON.stringify({ id, title: newTitle }),
+        });
+
+        loadItems();
+      }
+
+      // 删除
+      async function deleteItem(id) {
+        if (!confirm('确定删除吗？')) return;
+
+        await fetch(API, {
+          method: 'DELETE',
+          body: JSON.stringify({ id }),
+        });
+
+        loadItems();
+      }
+
+      // 初始化加载
+      loadItems();
+    </script>
+  </body>
+</html>

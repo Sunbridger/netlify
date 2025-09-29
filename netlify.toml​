@@ -1,0 +1,3 @@
+[build]
+  publish = "public"         # 前端静态文件的存放目录
+  functions = "netlify/functions"  # 无服务器函数代码的存放目录
