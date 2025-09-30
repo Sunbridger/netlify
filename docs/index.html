@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>💖 乔&娜的恋爱日记</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>💕 乔&娜的甜蜜小站</h1>
+        <p class="subtitle">记录我们的每一个美好瞬间</p>
+      </header>
+
+      <main class="main-content">
+        <!-- 恋爱天数计数器 -->
+        <section class="love-counter">
+          <div class="counter-card">
+            <h2>📅 恋爱天数</h2>
+            <div id="loveDays" class="days-number">0</div>
+            <p class="counter-text">从 2024-09-14 开始</p>
+          </div>
+        </section>
+
+        <!-- 时间轴 -->
+        <section class="timeline">
+          <h2>🌟 重要时刻</h2>
+          <div class="timeline-list">
+            <div class="timeline-item">
+              <div class="timeline-date">2024-09-14</div>
+              <div class="timeline-content">💑 我们正式在一起啦！</div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">2024-10-01</div>
+              <div class="timeline-content">🎉 第一次国庆节一起度过</div>
+            </div>
+            <!-- 可以继续添加更多时刻 -->
+          </div>
+        </section>
+
+        <!-- 照片墙 -->
+        <section class="gallery">
+          <h2>📸 甜蜜瞬间</h2>
+          <div class="photo-grid" id="photoGrid">
+            <!-- 照片将通过JavaScript动态加载 -->
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <p>💌 每天爱你多一些</p>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
