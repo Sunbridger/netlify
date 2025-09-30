@@ -31,7 +31,7 @@ async function main() {
 
     // 通过 Bark 推送
     await sendBarkNotification({
-      title: `💘 乔&娜恋爱天数提醒，今天是我们相恋的第 ${diffDays} 天！`,
+      title: `💘 乔&娜相恋的第 ${diffDays} 天！`,
       body: message,
       sound: 'minuet',
     });
@@ -176,7 +176,7 @@ async function sendBarkNotification({ title, body, sound = 'minuet' }) {
     body,
     sound,
     icon: `https://emojicdn.elk.sh/${getRandomLoveEmoji()}`,
-    level: 'timeSensitive',
+    // level: 'timeSensitive',
   });
 
   return response.data;
