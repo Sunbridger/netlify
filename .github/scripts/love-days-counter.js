@@ -25,13 +25,11 @@ async function main() {
     const displayDate = beijingTime.toISOString().split('T')[0];
 
     // 可爱风格的消息模板
-    const message = `
-    ${getRandomLoveEmoji()} ${getRandomLoveMessage(diffDays)}
-    `;
+    const message = getRandomLoveMessage(diffDays);
 
     // 通过 Bark 推送
     await sendBarkNotification({
-      title: `💘 乔&娜相恋的第 ${diffDays} 天！`,
+      title: `${getRandomLoveEmoji()}乔&娜相恋的第 ${diffDays} 天！`,
       body: message,
       sound: 'minuet',
     });
@@ -101,8 +99,8 @@ function getRandomLoveMessage(days) {
     `已经一起走过 ${days} 个日夜啦~`,
     `我们的爱情像小树苗一样生长了 ${days} 天！`,
     `${days} 天的陪伴，每一天都甜度超标！`,
-    `这是我们一起编织的第 ${days} 个梦境✨`,
-    `${days} 天 = ${days * 24} 小时 = ${days * 1440} 分钟的爱 💖`,
+    `这是我们一起编织的第 ${days} 个梦境`,
+    `${days} 天 = ${days * 24} 小时 = ${days * 1440} 分钟的爱`,
 
     // 文艺诗句款
     `春风十里不如你，${days}天只是开始`,
@@ -113,13 +111,13 @@ function getRandomLoveMessage(days) {
     // 可爱比喻款
     `像${days}颗草莓糖，每天甜度+1`,
     `我们的爱情储蓄罐又多了${days}枚金币~`,
-    `这是第${days}次宇宙为我们绽放烟花🎆`,
+    `这是第${days}次宇宙为我们绽放烟花`,
     `恋爱进度条：▓▓▓▓▓▓▓▓▓ ${days}/∞`,
 
     // 互动款
     `今天是我们通关恋爱游戏的第${days}关！`,
     `第${days}次对你说：早安、午安、晚安`,
-    `已收集 ${days} 个「爱你」的碎片🧩`,
+    `已收集 ${days} 个「爱你」的碎片`,
     `今日恋爱温度：${days}°C（持续升温中）`,
 
     // 暖心款
@@ -162,7 +160,7 @@ function getRandomLoveMessage(days) {
   }
 
   // 普通日期随机返回基础文案
-  return baseMessages[Math.floor(Math.random() * baseMessages.length)];
+  return baseMessages[Math.floor(Math.random() * baseMessages.length)] + getRandomLoveEmoji();
 }
 
 // 发送 Bark 通知
