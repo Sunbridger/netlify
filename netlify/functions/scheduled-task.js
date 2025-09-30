@@ -1,64 +1,77 @@
+// netlify/functions/love-days-counter.js
 const axios = require('axios');
 
-// netlify/functions/scheduled-task.js
 exports.handler = async (event, context) => {
   try {
-    const timestamp = new Date().toISOString();
-    console.log('✅ 定时任务执行成功:', timestamp);
+    // 相恋日期（可以改为你的纪念日）
+    const LOVE_START_DATE = new Date('2024-09-14T00:00:00Z');
+    const nowUTC = new Date();
 
-    // 这里写你的定时任务逻辑
-    await yourTaskLogic();
+    // 计算天数差
+    const diffTime = nowUTC - LOVE_START_DATE;
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+    // 显示北京时间给用户
+    const beijingTime = new Date(nowUTC.getTime() + 8 * 60 * 60 * 1000);
+    const displayDate = beijingTime.toISOString().split('T')[0];
+
+    // 可爱风格的消息模板
+    const message = `
+    💕 恋爱日报 💕
+    ━━━━━━━━━━━━
+    今天是我们的第 ${diffDays} 天！
+
+    🗓️ 纪念日：2024-09-14
+    📆 今日日期：${displayDate}
+
+    ${getRandomLoveEmoji()} ${getRandomLoveMessage(diffDays)}
+    `;
+
+    // 通过 Bark 推送（替换为你的Bark Key）
+    await sendBarkNotification({
+      title: '💘 恋爱天数提醒',
+      body: message,
+      sound: 'minuet',
+    });
 
     return {
       statusCode: 200,
-      data: Math.random(),
-      body: JSON.stringify({
-        message: '定时任务执行成功',
-        timestamp: timestamp,
-      }),
+      body: JSON.stringify({ success: true, days: diffDays }),
     };
   } catch (error) {
-    console.error('❌ 定时任务错误:', error);
     return {
       statusCode: 500,
-      data: Math.random(),
       body: JSON.stringify({ error: error.message }),
     };
   }
 };
 
-async function yourTaskLogic() {
-  try {
-    console.log('🔄 正在执行定时任务...');
+// 随机恋爱表情
+function getRandomLoveEmoji() {
+  const emojis = ['🌸', '🍬', '💌', '🐇', '🧸', '🎀', '🍭', '🌈'];
+  return emojis[Math.floor(Math.random() * emojis.length)];
+}
 
-    // 2. 通过 Bark 发送通知
-    await sendBarkNotification({
-      title: '乔&娜恋爱纪念',
-      body: `最新数据: 完成`,
-      level: 'active', // 通知级别（active/timeSensitive/passive）
-    });
-
-    console.log('✅ 任务完成');
-  } catch (error) {
-    // 错误时也发送通知
-    await sendBarkNotification({
-      title: '定时任务失败',
-      body: `错误: ${error.message}`,
-      level: 'timeSensitive',
-    });
-    throw error;
-  }
+// 随机恋爱语录
+function getRandomLoveMessage(days) {
+  const messages = [
+    `已经一起走过 ${days} 个日夜啦~`,
+    `我们的爱情像小树苗一样生长了 ${days} 天！`,
+    `${days} 天的陪伴，每一天都甜度超标！`,
+    `这是我们一起编织的第 ${days} 个梦境✨`,
+    `💖 ${days} 天 = ${days * 24} 小时 = ${days * 1440} 分钟的爱 💖`,
+  ];
+  return messages[Math.floor(Math.random() * messages.length)];
 }
 
 // 发送 Bark 通知
-async function sendBarkNotification({ title, body, level = 'active' }) {
-  const BARK_KEY = process.env.BARK_KEY; // 从环境变量获取
-
+async function sendBarkNotification({ title, body, sound = 'minuet' }) {
+  const BARK_KEY = process.env.BARK_KEY;
   return axios.post(`https://api.day.app/${BARK_KEY}`, {
     title,
     body,
-    sound: 'minuet', // 通知音效
-    level, // 通知优先级
-    isArchive: '1', // 保存到通知中心
+    sound,
+    icon: 'https://emojicdn.elk.sh/💖',
+    level: 'timeSensitive',
   });
 }
