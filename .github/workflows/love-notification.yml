@@ -1,0 +1,34 @@
+# .github/workflows/love-days-reminder.yml
+name: 💌 乔&娜恋爱天数提醒
+
+on:
+  schedule:
+    # 每天 UTC 时间 2:00 运行（北京时间 10:00）
+    - cron: '0 2 * * *'
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  send-love-reminder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛎️ 检出代码
+        uses: actions/checkout@v4
+
+      - name: ⎔ 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 📦 安装依赖
+        run: npm install axios
+
+      - name: 💖 发送恋爱天数提醒
+        env:
+          BARK_KEY: ${{ secrets.BARK_KEY }}
+        run: node .github/scripts/love-days-counter.js
+
+      - name: ✅ 任务完成
+        run: |
+          echo "恋爱天数推送任务完成"
+          echo "完成时间: $(date)"

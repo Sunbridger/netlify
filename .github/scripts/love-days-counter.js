@@ -1,9 +1,18 @@
-// netlify/functions/love-days-counter.js
+// .github/scripts/love-days-counter.js
 const axios = require('axios');
 
-exports.handler = async (event, context) => {
+// 配置常量
+const CONFIG = {
+  LOVE_START_DATE: new Date('2024-09-14T00:00:00Z'),
+  BARK_KEY: process.env.BARK_KEY,
+  BARK_SOUND: 'minuet',
+};
+
+async function main() {
   try {
-    // 相恋日期（可以改为你的纪念日）
+    console.log('💖 开始执行恋爱天数推送...');
+
+    // 相恋日期
     const LOVE_START_DATE = new Date('2024-09-14T00:00:00Z');
     const nowUTC = new Date();
 
@@ -20,24 +29,22 @@ exports.handler = async (event, context) => {
     ${getRandomLoveEmoji()} ${getRandomLoveMessage(diffDays)}
     `;
 
-    // 通过 Bark 推送（替换为你的Bark Key）
+    // 通过 Bark 推送
     await sendBarkNotification({
       title: `💘 乔&娜恋爱天数提醒，今天是我们相恋的第 ${diffDays} 天！`,
       body: message,
       sound: 'minuet',
     });
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ success: true, days: diffDays }),
-    };
+    console.log('✅ 推送发送成功！');
+    console.log(`📅 相恋天数: ${diffDays}天`);
+    console.log(`🗓️ 今日日期: ${displayDate}`);
+    console.log(`💌 推送内容: ${message}`);
   } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: error.message }),
-    };
+    console.error('❌ 执行失败:', error.message);
+    process.exit(1);
   }
-};
+}
 
 // 随机恋爱表情
 function getRandomLoveEmoji() {
@@ -87,7 +94,6 @@ function getRandomLoveEmoji() {
 }
 
 // 随机恋爱语录
-
 function getRandomLoveMessage(days) {
   // 所有基础文案（普通日期使用）
   const baseMessages = [
@@ -150,7 +156,7 @@ function getRandomLoveMessage(days) {
   // 判断是否为特殊日期（100的整数倍）
   const isSpecialDay = days % 100 === 0;
 
-  // 如果是特殊日期，有50%概率使用特殊文案（也可以调整为更高概率）
+  // 特殊日期使用专属文案
   if (isSpecialDay) {
     return specialMessages[Math.floor(Math.random() * specialMessages.length)];
   }
@@ -161,12 +167,27 @@ function getRandomLoveMessage(days) {
 
 // 发送 Bark 通知
 async function sendBarkNotification({ title, body, sound = 'minuet' }) {
-  const BARK_KEY = process.env.BARK_KEY;
-  return axios.post(`https://api.day.app/${BARK_KEY}`, {
+  if (!CONFIG.BARK_KEY) {
+    throw new Error('BARK_KEY 环境变量未设置');
+  }
+
+  const response = await axios.post(`https://api.day.app/${CONFIG.BARK_KEY}`, {
     title,
     body,
     sound,
     icon: `https://emojicdn.elk.sh/${getRandomLoveEmoji()}`,
-    // level: 'timeSensitive',
+    level: 'timeSensitive',
+  });
+
+  return response.data;
+}
+
+// 执行主函数
+if (require.main === module) {
+  main().catch((error) => {
+    console.error('❌ 程序执行失败:', error);
+    process.exit(1);
   });
 }
+
+module.exports = { main };
