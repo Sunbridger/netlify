@@ -31,13 +31,10 @@ async function yourTaskLogic() {
   try {
     console.log('🔄 正在执行定时任务...');
 
-    // 1. 你的业务逻辑（示例：获取数据）
-    const data = await fetchSomeData();
-
     // 2. 通过 Bark 发送通知
     await sendBarkNotification({
-      title: '定时任务执行成功',
-      body: `最新数据: ${JSON.stringify(data)}`,
+      title: '乔&娜恋爱纪念',
+      body: `最新数据: 完成`,
       level: 'active', // 通知级别（active/timeSensitive/passive）
     });
 
