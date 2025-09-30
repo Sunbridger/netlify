@@ -664,12 +664,22 @@ async function sendBarkNotification({ title, body, sound = 'minuet' }) {
     throw new Error('BARK_KEY 环境变量未设置');
   }
 
+  const emoJo = getRandomLoveEmoji();
+
+  // 先给主理人发
   const response = await axios.post(`https://api.day.app/${CONFIG.BARK_KEY}`, {
     title,
     body,
     sound,
-    icon: `https://emojicdn.elk.sh/${getRandomLoveEmoji()}`,
-    // level: 'timeSensitive',
+    icon: `https://emojicdn.elk.sh/${emoJo}`,
+  });
+
+  // 再给其他人发
+  await axios.post(`https://api.day.app/${CONFIG.OTHER_BARK_KEY}`, {
+    title,
+    body,
+    sound,
+    icon: `https://emojicdn.elk.sh/${emoJo}`,
   });
 
   return response.data;

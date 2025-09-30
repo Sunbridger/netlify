@@ -26,6 +26,7 @@ jobs:
       - name: 💖 发送恋爱天数提醒
         env:
           BARK_KEY: ${{ secrets.BARK_KEY }}
+          OTHER_BARK_KEY: ${{ secrets.OTHER_BARK_KEY }}  # LNLP 的key
         run: node .github/scripts/love-days-counter.js
 
       - name: ✅ 任务完成
