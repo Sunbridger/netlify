@@ -32,11 +32,15 @@ function loadPhotoGallery() {
   const photos = [
     {
       src: 'assets/images/photo1.jpg',
-      alt: '我们的第一张合照',
+      alt: '泡芙',
     },
     {
       src: 'assets/images/photo2.jpg',
-      alt: '旅行记忆',
+      alt: '泡芙',
+    },
+    {
+      src: 'assets/images/photo3.jpg',
+      alt: '泡芙',
     },
     // 可以继续添加更多照片
   ];
