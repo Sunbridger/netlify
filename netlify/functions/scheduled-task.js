@@ -17,19 +17,12 @@ exports.handler = async (event, context) => {
 
     // 可爱风格的消息模板
     const message = `
-    💕 恋爱日报 💕
-    ━━━━━━━━━━━━
-    今天是我们的第 ${diffDays} 天！
-
-    🗓️ 纪念日：2024-09-14
-    📆 今日日期：${displayDate}
-
     ${getRandomLoveEmoji()} ${getRandomLoveMessage(diffDays)}
     `;
 
     // 通过 Bark 推送（替换为你的Bark Key）
     await sendBarkNotification({
-      title: '💘 恋爱天数提醒',
+      title: `💘 乔&娜恋爱天数提醒，今天是我们相恋的第 ${diffDays} 天！`,
       body: message,
       sound: 'minuet',
     });
@@ -103,7 +96,7 @@ function getRandomLoveMessage(days) {
     `我们的爱情像小树苗一样生长了 ${days} 天！`,
     `${days} 天的陪伴，每一天都甜度超标！`,
     `这是我们一起编织的第 ${days} 个梦境✨`,
-    `💖 ${days} 天 = ${days * 24} 小时 = ${days * 1440} 分钟的爱 💖`,
+    `${days} 天 = ${days * 24} 小时 = ${days * 1440} 分钟的爱 💖`,
 
     // 文艺诗句款
     `春风十里不如你，${days}天只是开始`,
@@ -174,6 +167,6 @@ async function sendBarkNotification({ title, body, sound = 'minuet' }) {
     body,
     sound,
     icon: `https://emojicdn.elk.sh/${getRandomLoveEmoji()}`,
-    level: 'timeSensitive',
+    // level: 'timeSensitive',
   });
 }
