@@ -5,6 +5,7 @@ const axios = require('axios');
 const CONFIG = {
   LOVE_START_DATE: new Date('2024-09-14T00:00:00Z'),
   BARK_KEY: process.env.BARK_KEY,
+  OTHER_BARK_KEY: process.env.OTHER_BARK_KEY,
   BARK_SOUND: 'minuet',
 };
 
