@@ -1,3 +1,5 @@
+const axios = require('axios');
+
 // netlify/functions/scheduled-task.js
 exports.handler = async (event, context) => {
   try {
@@ -25,9 +27,41 @@ exports.handler = async (event, context) => {
   }
 };
 
-// 示例任务逻辑
 async function yourTaskLogic() {
-  console.log('🔄 正在执行定时任务...');
-  // 例如：发送邮件、清理数据、调用API等
-  // console.log('任务完成');
+  try {
+    console.log('🔄 正在执行定时任务...');
+
+    // 1. 你的业务逻辑（示例：获取数据）
+    const data = await fetchSomeData();
+
+    // 2. 通过 Bark 发送通知
+    await sendBarkNotification({
+      title: '定时任务执行成功',
+      body: `最新数据: ${JSON.stringify(data)}`,
+      level: 'active', // 通知级别（active/timeSensitive/passive）
+    });
+
+    console.log('✅ 任务完成');
+  } catch (error) {
+    // 错误时也发送通知
+    await sendBarkNotification({
+      title: '定时任务失败',
+      body: `错误: ${error.message}`,
+      level: 'timeSensitive',
+    });
+    throw error;
+  }
+}
+
+// 发送 Bark 通知
+async function sendBarkNotification({ title, body, level = 'active' }) {
+  const BARK_KEY = process.env.BARK_KEY; // 从环境变量获取
+
+  return axios.post(`https://api.day.app/${BARK_KEY}`, {
+    title,
+    body,
+    sound: 'minuet', // 通知音效
+    level, // 通知优先级
+    isArchive: '1', // 保存到通知中心
+  });
 }
