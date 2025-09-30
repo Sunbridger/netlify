@@ -660,7 +660,7 @@ function getRandomLoveMessage(days) {
 }
 
 // 发送 Bark 通知
-async function sendBarkNotification({ title, body, sound = 'minuet' }) {
+async function sendBarkNotification({ title, body, sound = 'minuet', level = 'timeSensitive' }) {
   if (!CONFIG.BARK_KEY) {
     throw new Error('BARK_KEY 环境变量未设置');
   }
@@ -673,6 +673,7 @@ async function sendBarkNotification({ title, body, sound = 'minuet' }) {
     body,
     sound,
     icon: `https://emojicdn.elk.sh/${emoJo}`,
+    level,
   });
 
   // 再给其他人发
@@ -681,6 +682,7 @@ async function sendBarkNotification({ title, body, sound = 'minuet' }) {
     body,
     sound,
     icon: `https://emojicdn.elk.sh/${emoJo}`,
+    level,
   });
 
   return response.data;
