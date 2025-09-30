@@ -31,15 +31,15 @@ function loadPhotoGallery() {
   // 示例照片数据 - 实际使用时替换为你们的照片
   const photos = [
     {
-      src: 'assets/images/photo1.jpg',
+      src: 'assets/photo1.jpg',
       alt: '泡芙',
     },
     {
-      src: 'assets/images/photo2.jpg',
+      src: 'assets/photo2.jpg',
       alt: '泡芙',
     },
     {
-      src: 'assets/images/photo3.jpg',
+      src: 'assets/photo3.jpg',
       alt: '泡芙',
     },
     // 可以继续添加更多照片
