@@ -1,0 +1,25 @@
+# .github/workflows/scheduled-task.yml
+name: Scheduled Netlify Task
+
+on:
+  # 定时触发（UTC时间）
+  schedule:
+    # - cron: '0 9 * * *' # 每天UTC时间9点运行（北京时间17点）
+    - cron: '*/1 * * * *'  # 每1分钟运行（测试用）
+
+  # 允许手动触发
+  workflow_dispatch:
+
+jobs:
+  call-netlify-function:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🕐 触发 Netlify 定时任务
+        run: |
+          # 替换为你的 Netlify 站点URL
+          curl -X POST "https://sunbridger.netlify.app/.netlify/functions/scheduled-task" \
+            -H "Content-Type: application/json" \
+            -w "\n状态码: %{http_code}"
+
+      - name: ✅ 任务完成
+        run: echo "定时任务执行完成 - $(date)"
