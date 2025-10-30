@@ -6,7 +6,11 @@ function calculateLoveDays() {
   return Math.floor(diffTime / (1000 * 60 * 60 * 24));
 }
 
-// 更新页面显示
+/**
+ * 更新恋爱计数器显示
+ * 获取计算的恋爱天数并更新页面上对应的元素显示
+ * 当达到特殊日期(100的倍数)时，会应用特殊的样式效果
+ */
 function updateLoveCounter() {
   const days = calculateLoveDays();
   const loveDaysElement = document.getElementById('loveDays');
@@ -15,7 +19,7 @@ function updateLoveCounter() {
     loveDaysElement.textContent = days;
     loveDaysElement.style.animation = 'pulse 0.5s ease-in-out';
 
-    // 添加特殊日期的样式
+    // 特殊日期样式处理：每100天显示特殊效果
     if (days % 100 === 0) {
       loveDaysElement.style.color = '#ff6b6b';
       loveDaysElement.style.fontSize = '5rem';
