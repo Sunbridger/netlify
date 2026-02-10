@@ -1,0 +1,24 @@
+name: 🛡️ 自动保活 (Keepalive)
+
+on:
+  schedule:
+    # 每月 1 号 UTC 00:00 运行（确保在 60 天限制内）
+    - cron: '0 0 1 * *'
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  keepalive-commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 🛎️ 检出代码
+        uses: actions/checkout@v4
+
+      - name: 🤖 创建空提交
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --allow-empty -m "chore: automated keepalive commit [skip ci]"
+          git push
